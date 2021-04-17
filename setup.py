@@ -1,20 +1,6 @@
-from tagger import START_TAGS
-import psycopg2
+from tagger import START_TAGS, NaiveTagger, get_id_by_tag
+from utils import with_con_cur
 import psycopg2.extras
-
-from database_cfg import USER, PASSWORD, HOST, PORT, DATABASE
-from tagger import NaiveTagger, get_id_by_tag
-
-
-def with_con_cur(method):
-    def wrapper():
-        con = psycopg2.connect(user=USER, password=PASSWORD, host=HOST, port=PORT, database=DATABASE)
-        cur = con.cursor()
-        method(cur)
-        con.commit()
-        cur.close()
-        con.close()
-    return wrapper
 
 
 @with_con_cur
