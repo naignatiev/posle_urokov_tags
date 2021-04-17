@@ -42,19 +42,20 @@ def get_dummy_data_org(cur=None):
 
 @with_con_cur
 def get_dummy_data_child(cur):
-    from datetime import date
-    name = 'Ребёнок'
-    date = date(2007, 9, 22)
-    cur.execute("INSERT INTO address(latitude, longitude) values (%s, %s) returning address_id",
-                (55.810315, 37.55816))
-    address_id = cur.fetchone()[0]
-    cur.execute("INSERT INTO child(name, address_id, birth_date) values (%s, %s, %s) returning child_id",
-                (name, address_id, date))
-    child_id = cur.fetchone()[0]
-    for tag in ['История', 'Шахматы']:
-        cur.execute("INSERT INTO child2tag(child_id, tag_id) values (%s, %s) returning child_id",
-                    (child_id, get_id_by_tag(tag)))
-
+    def add_child(name, y, m, d, l0, l1, tags):
+        from datetime import date
+        date = date(y, m, d)
+        cur.execute("INSERT INTO address(latitude, longitude) values (%s, %s) returning address_id",
+                    (l0, l1))
+        address_id = cur.fetchone()[0]
+        cur.execute("INSERT INTO child(name, address_id, birth_date) values (%s, %s, %s) returning child_id",
+                    (name, address_id, date))
+        child_id = cur.fetchone()[0]
+        for tag in tags:
+            cur.execute("INSERT INTO child2tag(child_id, tag_id) values (%s, %s) returning child_id",
+                        (child_id, get_id_by_tag(tag)))
+    add_child('Петя', 2009, 8, 5, 53.991, 38.992, tags=['Шахматы'])
+    add_child('Толя', 2011, 11, 5, 53.2123, 51.2241, tags=['История', 'Химия'])
 
 if __name__ == '__main__':
     get_dummy_data_child()
