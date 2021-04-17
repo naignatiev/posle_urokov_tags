@@ -71,9 +71,9 @@ class NaiveTagger:
             self.tag_list.append('LEGO')
         if 'логопед' in self.words or 'дефектолог' in self.words:
             self.tag_list.append('Логопед')
-        if 'ОГЭ' in self.words:
+        if 'огэ' in self.words:
             self.tag_list.append('Подготовка к ОГЭ')
-        if 'ЕГЭ' in self.words:
+        if 'егэ' in self.words:
             self.tag_list.append('Подготовка к ЕГЭ')
         for s in SUBJ:
             if s in self.words:
