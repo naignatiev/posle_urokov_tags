@@ -54,7 +54,8 @@ class NaiveTagger:
         if 'музыка' in self.words or 'музыкальная' in self.words:
             i_tags = []
             for i in INSTRUMENTS:
-                i_tags.append(i)
+                if i in self.words:
+                    i_tags.append(i)
             if len(i_tags) < 2:
                 self.tag_list += i_tags
                 self.tag_list.append('Музыка')
@@ -119,7 +120,11 @@ swim_words = {'плавать', 'плавание', 'бассейн'}
 
 def start_tags_to_csv():
     import pandas as pd
-    pd.DataFrame.from_dict({'tag_id': range(len(START_TAGS)), 'tag_name': START_TAGS}).to_csv('START_TAGS.csv')
+    pd.DataFrame.from_dict({'tag_id': range(len(START_TAGS)), 'tag_name': START_TAGS}).to_csv('th/START_TAGS.csv')
+
+
+def get_id_by_tag(tag):
+    return START_TAGS.index(tag)
 
 
 if __name__ == '__main__':
