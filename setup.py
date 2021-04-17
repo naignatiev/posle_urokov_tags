@@ -57,5 +57,17 @@ def get_dummy_data_child(cur):
     add_child('Петя', 2009, 8, 5, 53.991, 38.992, tags=['Шахматы'])
     add_child('Толя', 2011, 11, 5, 53.2123, 51.2241, tags=['История', 'Химия'])
 
+
+@with_con_cur
+def get_dummy_score(cur):
+    sql_q = 'insert into tag (tag_id, tag_name) values %s'
+    data = [
+        (2, 1335, 5),
+        (2, 1336, 4),
+        (3, 1334, 4),
+    ]
+    psycopg2.extras.execute_values(cur, sql_q, data, template=None, page_size=100)
+
+
 if __name__ == '__main__':
     get_dummy_data_child()
