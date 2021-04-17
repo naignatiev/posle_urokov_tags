@@ -6,7 +6,7 @@ app = Flask(__name__)
 api = Api(app)
 
 
-from naive_tagger import NaiveTagger
+from tagger import NaiveTagger
 
 
 @app.route('/get_tags', methods=['GET', 'POST'])
@@ -18,11 +18,11 @@ def get_tags():
                     'params': {'name': name, 'desc': desc}})
 
 
-@app.route('/get_events', method=['GET', 'POST'])
+@app.route('/get_events', methods=['GET', 'POST'])
 def get_top_events():
     raise NotImplementedError
 
 
-@app.route('/get_section', method=['GET', 'POST'])
+@app.route('/get_section', methods=['GET', 'POST'])
 def get_best_section():
     raise NotImplementedError
