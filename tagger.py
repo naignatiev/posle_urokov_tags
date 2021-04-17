@@ -4,6 +4,18 @@ from nltk import word_tokenize
 
 morph = MorphAnalyzer()
 
+LANGS = ['английский', 'испанский', 'немецкий', 'итальянский', 'китайский',
+         'корейский', 'французский', 'греческий', 'арабский', 'японский',
+         'португальский', 'персидский', 'шведский']
+INSTRUMENTS = ['гитара', 'пианино', 'фортепиано', 'балалайка', 'барабан', 'флейта', 'саксафон', 'труба']
+SUBJ = ['математика', 'информатика', 'химия', 'история', 'обществознание', 'биология', 'физика', 'литература']
+START_TAGS = ['Онлайн', 'Программирование', 'Развитие интеллекта', 'Робототехника', 'Борьба', 'Гимнастика',
+              'Единоборства', 'Лыжный спорт', 'Спортивное развитие', 'Самбо', 'Танцы', 'Футбол', 'Музыка',
+              'Рисование'] + [f'{l[0].upper()}{l[1:]} язык' for l in LANGS] +\
+             [f'{i[0].upper()}{i[1:]}' for i in INSTRUMENTS] + ['Театральные курсы', 'Шахматы', 'LEGO',
+              'Логопед', 'Подготовка к ОГЭ', 'Подготовка к ЕГЭ'] + [f'{s[0].upper()}{s[1:]}' for s in SUBJ] +\
+              ['Каллиграфия', 'Скорочтение', 'Каратэ', 'Айкидо', 'Фехтование', 'Вокал', 'Баскетбол', 'Плавание']
+
 
 class NaiveTagger:
     def __init__(self, txt):
@@ -36,15 +48,12 @@ class NaiveTagger:
             self.tag_list.append('Танцы')
         if 'футбол' in self.words:
             self.tag_list.append('Футбол')
-        for l in ('английский', 'испанский', 'немецкий', 'итальянский', 'китайский',
-                  'корейский', 'французский', 'греческий', 'арабский', 'японский',
-                  'португальский', 'персидский', 'шведский'):
+        for l in LANGS:
             if l in self.words and 'язык' in self.words:
                 self.tag_list.append(f'{l[0].upper()}{l[1:]} язык')
         if 'музыка' in self.words or 'музыкальная' in self.words:
             i_tags = []
-            for i in ('гитара', 'пианино', 'фортепиано', 'балалайка', 'барабан', 'флейта',
-                      'саксафон', 'труба'):
+            for i in INSTRUMENTS:
                 i_tags.append(i)
             if len(i_tags) < 2:
                 self.tag_list += i_tags
@@ -66,10 +75,9 @@ class NaiveTagger:
             self.tag_list.append('Подготовка к ОГЭ')
         if 'ЕГЭ' in self.words:
             self.tag_list.append('Подготовка к ЕГЭ')
-        for p in ('математика', 'информатика', 'химия', 'история', 'обществознание',
-                  'биология', 'физика', 'литература'):
-            if p in self.words:
-                self.tag_list.append(f'{p[0].upper()}{p[1:]}')
+        for s in SUBJ:
+            if s in self.words:
+                self.tag_list.append(f'{s[0].upper()}{s[1:]}')
         if 'каллиграфия' in self.words:
             self.tag_list.append('Каллиграфия')
         if 'скорочтение' in self.words:
@@ -107,6 +115,11 @@ sport_words = {'ОФП', 'общая', 'физическая', 'подготов
 dance_words = {'танец', 'танцевальный'}
 sing_words = {'петь', 'пение', 'вокал'}
 swim_words = {'плавать', 'плавание', 'бассейн'}
+
+
+def start_tags_to_csv():
+    import pandas as pd
+    pd.DataFrame.from_dict({'tag_id': range(len(START_TAGS)), 'tag_name': START_TAGS}).to_csv('START_TAGS.csv')
 
 
 if __name__ == '__main__':
