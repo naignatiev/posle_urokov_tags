@@ -55,7 +55,7 @@ class NaiveTagger:
             i_tags = []
             for i in INSTRUMENTS:
                 if i in self.words:
-                    i_tags.append(i)
+                    i_tags.append(f'{i[0].upper()}{i[1:]}')
             if len(i_tags) < 2:
                 self.tag_list += i_tags
                 self.tag_list.append('Музыка')
