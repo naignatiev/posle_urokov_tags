@@ -1,14 +1,14 @@
 # Posle Urokov Tags
 Репозиторий API работы с тэгами секций, ивентов и детей.
 
-#Installation
+# Installation
 ```shell
 pip3 install -r requirements.txt
 export FLASK_APP=run.py
 flask run
 ```
 
-#Example
+# Example
 ```python3
 import requests
 
@@ -19,5 +19,5 @@ response = requests.get(f'{flask_app_addr}get_tags?name={name}&desc={desc}')
 print(response.json()['tags']) # ['Английский язык', 'Баскетбол']
 ```
 
-#License
+# License
 Code is [MIT licensed](./LICENSE)
