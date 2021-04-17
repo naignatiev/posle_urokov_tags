@@ -7,6 +7,7 @@ api = Api(app)
 
 
 from tagger import NaiveTagger
+from recommendations import Recommendation
 
 
 @app.route('/get_tags', methods=['GET', 'POST'])
@@ -23,6 +24,8 @@ def get_top_events():
     raise NotImplementedError
 
 
-@app.route('/get_section', methods=['GET', 'POST'])
+@app.route('/get_organizations', methods=['GET', 'POST'])
 def get_best_section():
-    raise NotImplementedError
+    child_id = request.args.get('child_id', '1')
+    return {'org_ids': Recommendation(default_score=3).get_organizations(child_id),
+            'params': {'child_id': child_id}}
