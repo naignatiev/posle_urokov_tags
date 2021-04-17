@@ -7,7 +7,7 @@ from database_cfg import USER, PASSWORD, HOST, PORT, DATABASE
 def init_starts_db():
     connection = psycopg2.connect(user=USER, password=PASSWORD, host=HOST, port=PORT, database=DATABASE)
     cursor = connection.cursor()
-    sql_q = 'insert into t (tag_id, tag_name) values %s'
+    sql_q = 'insert into tag (tag_id, tag_name) values %s'
     data = [
         (i, t) for i, t in enumerate(START_TAGS)
     ]
