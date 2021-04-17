@@ -3,6 +3,7 @@ import psycopg2
 import psycopg2.extras
 
 from database_cfg import USER, PASSWORD, HOST, PORT, DATABASE
+from tagger import NaiveTagger, get_id_by_tag
 
 
 def with_con_cur(method):
@@ -26,9 +27,8 @@ def init_starts_db(cur):
 
 
 @with_con_cur
-def get_dummy_data(cur=None):
+def get_dummy_data_org(cur=None):
     from dummy_data import orgs, locs
-    from tagger import NaiveTagger, get_id_by_tag
 
     for i, (name, desc) in enumerate(orgs):
         cur.execute("INSERT INTO address(latitude, longitude) values (%s, %s) returning address_id", locs[i])
@@ -40,5 +40,21 @@ def get_dummy_data(cur=None):
             cur.execute("INSERT INTO org2tag (org_id, tag_id) values(%s, %s)",  (org_id, get_id_by_tag(tag)))
 
 
+@with_con_cur
+def get_dummy_data_child(cur):
+    from datetime import date
+    name = 'Ребёнок'
+    date = date(2007, 9, 22)
+    cur.execute("INSERT INTO address(latitude, longitude) values (%s, %s) returning address_id",
+                (55.810315, 37.55816))
+    address_id = cur.fetchone()[0]
+    cur.execute("INSERT INTO child(name, address_id, birth_date) values (%s, %s, %s) returning child_id",
+                (name, address_id, date))
+    child_id = cur.fetchone()[0]
+    for tag in ['История', 'Шахматы']:
+        cur.execute("INSERT INTO child2tag(child_id, tag_id) values (%s, %s) returning child_id",
+                    (child_id, get_id_by_tag(tag)))
+
+
 if __name__ == '__main__':
-    get_dummy_data()
+    get_dummy_data_child()
